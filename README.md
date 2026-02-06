@@ -1,145 +1,137 @@
 # 📅 Mini Event Tracker
 
-A high-performance, full-stack event management application featuring a **NestJS** backend and a **Next.js** frontend. Designed with premium aesthetics and robust architecture.
+A full-stack Event Management System built with **NestJS** (Backend) and **Next.js** (Frontend). Track events, manage attendees, and handle authentication securely.
 
----
-
-## 🌟 Key Features
-
-- **Standardized API Layer**: Robust backend with versioning (`/api/v1/`), global logging, and unified response normalization.
-- **Secure Authentication**: JWT-based auth with refresh token rotation and secure storage.
-- **Advanced Event Management**: Full CRUD (Create, Read, Update, Delete) capability for events.
-- **Public Event Sharing**: Generate and manage secure public links for external sharing.
-- **Dynamic Dashboard**: Interactive dashboard with upcoming/past event filtering and real-time navigation.
-- **Developer Convenience**: Included seed scripts and "Quick Fill" demo login options.
+🚀 **Live Demo:** [https://mini-event-tracker-ifsh.vercel.app/](https://mini-event-tracker-ifsh.vercel.app/)
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Backend
-- **Framework**: NestJS (Node.js)
-- **Database**: PostgreSQL (managed via Prisma ORM)
-- **Auth**: Passport.js + JWT
-- **Documentation**: Swagger API UI
-- **Validation**: Class-validator & Class-transformer
-
-### Frontend
-- **Framework**: Next.js 14 (App Router)
-- **Styling**: Tailwind CSS (Premium Dark/Indigo theme)
-- **Icons**: Lucide React
-- **Forms**: React Hook Form + Zod
-- **Networking**: Axios with centralized API configuration
+*   **Backend:** NestJS, TypeScript, Prisma (ORM), PostgreSQL (Supabase), JWT Auth.
+*   **Frontend:** Next.js 14 (App Router), Tailwind CSS, TypeScript, Axios.
+*   **Deployment:** Render (Backend), Vercel (Frontend).
 
 ---
 
-## 📁 Project Structure
+## ⚙️ Prerequisites
 
-```text
-Mini Event Tracker/
-├── backend/                # NestJS API
-│   ├── prisma/             # Schema and Seed scripts
-│   ├── src/                # Source code (Modules: Auth, Users, Events, Attendees)
-│   └── .env                # Backend Configuration
-├── frontend/               # Next.js Application
-│   ├── src/app/            # Routes & Pages
-│   ├── src/components/     # Reusable UI components
-│   ├── src/context/        # Global Auth State
-│   └── .env.local          # Frontend Configuration
-└── README.md               # Main Documentation
+Before you begin, ensure you have the following installed:
+*   [Node.js](https://nodejs.org/) (v18 or higher)
+*   [Git](https://git-scm.com/)
+*   A PostgreSQL Database URL (e.g., from [Supabase](https://supabase.com/))
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to set up the project locally.
+
+### 1. Clone the Repository
+
+```bash
+git clone <your-repo-url>
+cd Mini-Event-Tracker
 ```
 
 ---
 
-## ⚙️ How to Set Up
+### 2. Backend Setup (`backend` folder)
 
-### 1. Prerequisites
-- **Node.js**: v18 or higher
-- **Database**: A PostgreSQL instance (local or hosted, e.g., Supabase/Neon)
+1.  **Navigate to the backend directory:**
+    ```bash
+    cd backend
+    ```
 
-### 2. Backend Setup
-1. Navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Configure environment variables. Create a `.env` file in the `backend/` folder:
-   ```env
-   # Database
-   DATABASE_URL="postgresql://user:password@localhost:5432/event_tracker"
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    # If you face dependency conflicts, run:
+    npm install --legacy-peer-deps
+    ```
 
-   # Auth
-   JWT_SECRET="your-super-secret-access-key"
-   JWT_EXPIRATION="15m"
-   JWT_REFRESH_SECRET="your-super-secret-refresh-key"
-   JWT_REFRESH_EXPIRATION="7d"
+3.  **Configure Environment Variables:**
+    Create a `.env` file in the `backend` folder:
+    ```env
+    # Database (Supabase Recommended)
+    DATABASE_URL="postgresql://postgres:[PASSWORD]@db.xxx.supabase.co:5432/postgres"
 
-   # Server
-   PORT=8080
-   ```
-4. Synchronize the database schema and generate the client:
-   ```bash
-   npx prisma generate
-   npx prisma db push
-   ```
-5. Seed the database with demo data:
-   ```bash
-   npx prisma db seed
-   ```
-6. Start the development server:
-   ```bash
-   npm run start:dev
-   ```
+    # API Configuration
+    PORT=8080
+    FRONTEND_URL="http://localhost:3000"
 
-### 3. Frontend Setup
-1. Navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Configure environment variables. Create a `.env.local` file in the `frontend/` folder:
-   ```env
-   NEXT_PUBLIC_API_URL=http://localhost:8080/api/v1
-   ```
-4. Start the development server:
-   ```bash
-   npm run dev
-   ```
+    # Security (Change these for production!)
+    JWT_SECRET="super-secret-key"
+    JWT_REFRESH_SECRET="super-refresh-secret-key"
+    ```
+
+4.  **Run Database Migrations:**
+    ```bash
+    npx prisma generate
+    npx prisma db push
+    ```
+
+5.  **Start the Backend Server:**
+    ```bash
+    npm run start:dev
+    ```
+    *Server will run at: `http://localhost:8080`*
+    *Swagger Docs: `http://localhost:8080/api/docs`*
 
 ---
 
-## 🔑 Demo Access
+### 3. Frontend Setup (`frontend` folder)
 
-For testing without registration, use the **"Quick Fill"** button on the Sign-in page or enter these manually:
-- **Email**: `demo@example.com`
-- **Password**: `password123`
+1.  **Open a new terminal and navigate to the frontend directory:**
+    ```bash
+    cd frontend
+    ```
+
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+3.  **Configure Environment Variables:**
+    Create a `.env.local` file in the `frontend` folder:
+    ```env
+    NEXT_PUBLIC_API_URL="http://localhost:8080/api/v1"
+    ```
+
+4.  **Start the Frontend:**
+    ```bash
+    npm run dev
+    ```
+    *App will run at: `http://localhost:3000`*
 
 ---
 
-## 📡 API Reference
+## 🌐 Production Deployment Guide
 
-Access the interactive API documentation at `http://localhost:8080/api/docs` (when the backend is running).
+### Backend (Render)
+1.  Connect your repo to **Render**.
+2.  Set **Root Directory** to `backend`.
+3.  Set **Build Command**: `npm install && npx prisma generate && npm run build`
+4.  Set **Start Command**: `node dist/main`
+5.  Add Environment Variables (`DATABASE_URL`, `JWT_SECRET`, `FRONTEND_URL` etc.) in the Render Dashboard.
 
-| Endpoint | Method | Description |
-| :--- | :--- | :--- |
-| `/auth/login` | `POST` | Authenticate user and receive tokens |
-| `/auth/register` | `POST` | Register a new user |
-| `/events` | `GET` | Fetch events with pagination and filters |
-| `/events/:id` | `PATCH` | Update existing event details |
-| `/events/share/:token` | `GET` | Get public data for a shared event |
+### Frontend (Vercel)
+1.  Connect your repo to **Vercel**.
+2.  Set **Root Directory** to `frontend`.
+3.  Add `NEXT_PUBLIC_API_URL` environment variable pointing to your **Render Backend URL**.
+4.  Deploy!
 
 ---
 
-## 🚀 Deployment
+## 🐞 Troubleshooting
 
-1. **Database**: Host on Supabase or Neon.
-2. **Backend**: Deploy to Render or railway as a web service.
-3. **Frontend**: Deploy to Vercel (seamless Next.js support).
+*   **401 Unauthorized Errors?**
+    *   Ensure third-party cookies are enabled in your browser if testing cross-site (localhost -> Render).
+    *   Verify `FRONTEND_URL` in your backend `.env` matches your frontend address exactly.
 
-**Built with ❤️ for Event Organizers.**
+*   **Prisma Error P1001?**
+    *   Supabase might have paused your project. Login to Supabase and "Restore" it.
+
+---
+
+Made with ❤️ by Kumar
