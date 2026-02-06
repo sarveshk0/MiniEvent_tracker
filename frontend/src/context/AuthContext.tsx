@@ -27,12 +27,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const response = await api.get<ApiResponse<User>>('users/me');
       if (response.data.success) {
-
         setUser(response.data.data);
       } else {
         setUser(null);
       }
-    } catch (error) {
+    } catch (error: any) {
       setUser(null);
     } finally {
       setLoading(false);

@@ -28,6 +28,11 @@ async function bootstrap() {
   );
 
   app.use(cookieParser());
+  
+  // Necessary for Secure cookies to work on Render
+  const expressApp = app.getHttpAdapter().getInstance();
+  expressApp.set('trust proxy', 1);
+
   app.enableCors({
     origin: process.env.FRONTEND_URL || 'http://localhost:3000',
     credentials: true,
