@@ -7,6 +7,8 @@ import { UsersModule } from './users/users.module';
 import { EventsModule } from './events/events.module';
 import { AttendeesModule } from './attendees/attendees.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { ScheduleModule } from '@nestjs/schedule';
+import { KeepAliveService } from './common/services/keep-alive.service';
 
 @Module({
   imports: [
@@ -15,6 +17,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
     UsersModule,
     EventsModule,
     AttendeesModule,
+    ScheduleModule.forRoot(),
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
@@ -23,6 +26,6 @@ import { ThrottlerModule } from '@nestjs/throttler';
     ]),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, KeepAliveService],
 })
 export class AppModule {}
