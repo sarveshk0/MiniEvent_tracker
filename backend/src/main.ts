@@ -34,7 +34,11 @@ async function bootstrap() {
   expressApp.set('trust proxy', 1);
 
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    origin: (origin, callback) => {
+      // Reflect the origin to allow any domain (localhost, IP, or production URL)
+      // This is necessary for credentials (cookies) to work across different origins
+      callback(null, true);
+    },
     credentials: true,
   });
 

@@ -29,6 +29,7 @@ export class AuthController {
   @ApiOperation({ summary: 'User login' })
   async login(
     @Body() loginDto: LoginDto,
+    @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
     const tokens = await this.authService.validateUser(
@@ -39,7 +40,7 @@ export class AuthController {
       throw new UnauthorizedException('Invalid credentials');
     }
     const result = await this.authService.login(tokens);
-    this.setCookies(res, result);
+    this.setCookies(req, res, result);
     return { message: 'Login successful' };
   }
 
@@ -48,10 +49,11 @@ export class AuthController {
   @ApiOperation({ summary: 'User registration' })
   async register(
     @Body() registerDto: RegisterDto,
+    @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
     const result = await this.authService.register(registerDto);
-    this.setCookies(res, result);
+    this.setCookies(req, res, result);
     return { message: 'Registration successful' };
   }
 
@@ -79,7 +81,7 @@ export class AuthController {
       req.user.userId,
       req.user.refreshToken,
     );
-    this.setCookies(res, tokens);
+    this.setCookies(req, res, tokens);
     return { message: 'Token refreshed' };
   }
 
@@ -92,19 +94,22 @@ export class AuthController {
   }
 
   private setCookies(
+    req: Request,
     res: Response,
     tokens: { access_token: string; refresh_token: string },
   ) {
+    const isProduction = process.env.NODE_ENV === 'production' || req.get?.('host')?.includes('onrender.com');
+
     res.cookie('access_token', tokens.access_token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : 'lax',
       maxAge: 15 * 60 * 1000, // 15 mins
     });
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
   }
